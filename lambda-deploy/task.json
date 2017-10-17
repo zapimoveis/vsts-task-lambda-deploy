@@ -1,0 +1,202 @@
+{
+    "id": "2a405244-8c59-4db7-8af3-6b955b7c43b6",
+    "name": "LambdaDeploy",
+    "friendlyName": "AWS Lambda Deploy",
+    "description": "Deploy or Publish a package in AWS Lambda function",
+    "author": "ZAP S/A Internet",
+    "helpMarkDown": "Please refer to [AWS Lambda Developer Guide](https://docs.aws.amazon.com/lambda/latest/dg/) for more information on working with AWS Lambda.",
+    "category": "Deploy",
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "demands": [],
+    "version": {
+        "Major": "0",
+        "Minor": "0",
+        "Patch": "11"
+    },
+    "minimumAgentVersion": "1.91.0",
+    "instanceNameFormat": "Deploy or Publish to Lambda: $(functionName)",
+    "groups": [
+        {
+            "name": "deployFunction",
+            "displayName": "Deploy a new packge of Lambda Function",
+            "isExpanded": true,
+            "visibleRule": "taskOperation = deployFunction"
+        },
+        {
+            "name": "publishVersion",
+            "displayName": "Publish a new version from the latest Lambda Function",
+            "visibleRule": "taskOperation = publishVersion"
+        }
+    ],
+    "inputs": [
+        {
+            "name": "awsCredentials",
+            "type": "connectedService:AWS",
+            "label": "AWS Credentials",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Select the AWS credentials to use. If needed, click on 'Manage', and add a new Service Endpoint of type 'AWS'."
+        },
+        {
+            "name": "regionName",
+            "label": "AWS Region",
+            "type": "string",
+            "required": true,
+            "defaultValue": "",
+            "helpMarkDown": "AWS region name, please check https://docs.aws.amazon.com/general/latest/gr/rande.html."
+        },
+        {
+            "name": "functionName",
+            "type": "string",
+            "label": "Function Name",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "The name for the deployed Lambda function."
+        },
+        {
+            "name": "functionAlias",
+            "type": "string",
+            "label": "Function Alias",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "The Alias associated to the Function."
+        },
+        {
+            "name": "functionDescription",
+            "type": "string",
+            "label": "Function Description",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "The description for the deployed Lambda function."
+        },
+        {
+            "name": "taskOperation",
+            "type": "radio",
+            "label": "Operation",
+            "defaultValue": "deployFunction",
+            "required": true,
+            "helpMarkDown": "The type of operation to perform. \"Deploy Function\" deploys a pacakge in an new or existing Lambda Function. \"Publish Function\" performs to create a new version of the latest version of Lambda Function.",
+            "options": {
+                "deployFunction": "Deploy Function",
+                "publishVersion": "Publish Version"
+            },
+            "properties": {
+                "EditableOptions": "False"
+            }
+        },
+        {
+            "name": "projectPath",
+            "label": "Path to Lambda Project",
+            "type": "filePath",
+            "required": false,
+            "defaultValue": "",
+            "groupName": "deployFunction",
+            "helpMarkDown": "The relative path to the location of the Lambda project to deploy."
+        },
+        {
+            "name": "functionRole",
+            "type": "string",
+            "label": "Function Role",
+            "defaultValue": "",
+            "required": false,
+            "groupName": "deployFunction",
+            "helpMarkDown": "The ARN of the AWS Identity and Access Management Role that provides access to AWS services to the deployed Lambda function."
+        },
+        {
+            "name": "functionRuntime",
+            "type": "string",
+            "label": "Function Runtime",
+            "defaultValue": "",
+            "required": false,
+            "groupName": "deployFunction",
+            "helpMarkDown": "The Runtime of package."
+        },
+        {
+            "name": "functionHandler",
+            "type": "string",
+            "label": "Function Handler",
+            "defaultValue": "",
+            "required": false,
+            "groupName": "deployFunction",
+            "helpMarkDown": "The function within your code that Lambda calls to begin execution. Format is &lt;assembly-name&gt;::&lt;type-name&gt;::&lt;function-name&gt;."
+        },
+        {
+            "name": "functionMemory",
+            "type": "int",
+            "label": "Function Memory (MB)",
+            "defaultValue": 128,
+            "required": false,
+            "groupName": "deployFunction",
+            "helpMarkDown": "Memory allocated to the Lambda function. The value must be in multiples of 64."
+        },
+        {
+            "name": "functionTimeout",
+            "type": "int",
+            "label": "Function Timout (Seconds)",
+            "defaultValue": 10,
+            "required": false,
+            "groupName": "deployFunction",
+            "helpMarkDown": "The function execution time at which Lambda should terminate the function."
+        },
+        {
+            "name": "functionSubnets",
+            "type": "string",
+            "label": "Subnet",
+            "defaultValue": "",
+            "required": false,
+            "groupName": "deployFunction",
+            "helpMarkDown": "The name of VPC Subnets that Lambda should use to set up your VPC Configuration (Format: \"subnet-id\") (For more subnets use \",\" to separate)"
+        },
+        {
+            "name": "functionSecurityGroups",
+            "type": "string",
+            "label": "Security Groups",
+            "defaultValue": "",
+            "required": false,
+            "groupName": "deployFunction",
+            "helpMarkDown": "The name of VPC Security Groups that Lambda should use to set up your VPC Configuration (Format: \"sg-id\") (For more security groups use \",\" to separate)"
+        },
+        {
+            "name": "functionEnvironmentVariables",
+            "type": "string",
+            "label": "Environment Variables",
+            "defaultValue": "",
+            "required": false,
+            "groupName": "deployFunction",
+            "helpMarkDown": "You can define Environment Variables as JSON that are accessible from your function code."
+        }
+    ],
+    "execution": {
+        "Node": {
+            "target": "index.js",
+            "argumentFormat": ""
+        }
+    },
+    "messages": {
+        "functionDeployInit": "Starting deploy on Lambda Function '%s' with the alias '%s'...",
+        "functionOperationUpdate": "The Lambda Function will be updated",
+        "functionOperationCreate": "The Lambda Function will be created",
+        "functionOperationError": "Doesn't possible define the operation to manipulate the Lambda Function",
+        "functionCreating": "The Lambda Function '%s' is being created...",
+        "functionCreatingError": "Error to create Lambda Function '%s'",
+        "functionCreated": "The Lambda Function '%s' was created with success",
+        "functionUpdating": "The Lambda Function '%s' is being updating...",
+        "functionUpdatingError": "Error to update Lambda Function '%s'",
+        "functionUpdatingSuccess": "The Lambda Function '%s' was updated with success",
+        "functionAliasAssociateInit": "Starting associate alias '%s' on Lambda Function '%s'...",
+        "functionDeploySuccess": "Deploy of Lambda Function realized with success",
+        "functionPublishInit": "Starting to publish the new version of Lambda Function '%s', with the alias '%s'...",
+        "functionDoesntExistsPublishError": "The Lambda Function %s doesn't exists",
+        "functionPublishSuccess": "The new version of Lambda Function was publicated with success",
+        "functionPublishError": "Error to publicate the new version of Lambda Function",
+        "functionPublishVersionCreatedSuccess": "The version '%s' was cretead for the Lambda Function '%s'",
+        "functionPublishVersionSuccess": "The version '%s' has no modifications for the Lambda Function '%s'",
+        "functionPublishVersionError": "Error to create the new version of Lambda Function '%s'",
+        "functionAliasAlreadyAssociated": "The alias '%s' ​​is already associated with version '%s'",
+        "funcitonAliasCreatedAssociatedSuccess": "The alias '%s' was created and associated for the version '%s' (Consider invoking by the ARN: '%s')",
+        "funcitonAliasUpdatedAssociatedSuccess": "The alias '%s' was updated and associated for the version '%s' (Consider invoking by the ARN: '%s')"
+    }
+}

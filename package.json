@@ -1,0 +1,21 @@
+{
+  "name": "lambda-deploy-aws-plugin",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/zapimoveis/vsts-task-lambda-deploy.git"
+  },
+  "author": "ZAP S/A Internet",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^21.2.1",
+    "tfx-cli": "^0.4.11"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.124.0",
+    "bluebird": "^3.5.0",
+    "vsts-task-lib": "^2.1.0"
+  }
+}
