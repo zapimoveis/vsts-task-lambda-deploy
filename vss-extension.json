@@ -1,0 +1,129 @@
+{
+    "manifestVersion": 1,
+    "id": "lambda-deploy-aws-plugin",  
+    "version": "0.0.4",
+    "name": "AWS Lambda Deploy",
+    "scope": [
+        "vso.build",
+        "vso.build_execute",
+        "vso.release"
+    ],
+    "description": "Deploy or Publish a package in AWS Lambda function",
+    "publisher": "zapimoveis",
+    "icons": {
+        "default": "images/logo.png"
+    },
+    "public": true,
+	"content": {
+        "details": {
+            "path": "overview.md"
+        },
+        "license": {
+            "path": "LICENSE"
+        }
+    },
+    "targets":[
+        {
+            "id": "Microsoft.VisualStudio.Services.Cloud"
+        }
+    ],
+    "tags":[
+        "AWS",
+        "Lambda"
+    ],
+    "links": {
+        "license": {
+            "uri": "https://github.com/zapimoveis/vsts-task-lambda-deploy/blob/master/LICENSE"
+        },
+        "support": {
+            "uri": "https://github.com/zapimoveis/vsts-task-lambda-deploy/issues"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/zapimoveis/vsts-task-lambda-deploy"
+    },
+    "branding": {
+        "color": "rgb(111, 111, 111)",
+        "theme": "light"
+    },
+    "files": [
+        {
+            "path": "images",
+            "addressable": true
+        },
+        {
+            "path": "lambda-deploy"
+        }
+    ],
+    "categories": [
+        "Build and release"
+    ],
+    "contributions":[
+        {
+            "id": "aws-credentials",
+            "description": "Credentials for tasks invoking AWS services",
+            "type": "ms.vss-endpoint.service-endpoint-type",
+            "targets": [
+                "ms.vss-endpoint.endpoint-types"
+            ],
+            "properties": {
+                "name": "AWS",
+                "displayName": "AWS",
+                "url": {
+                    "displayName": "Server Url",
+                    "helpText": "AWS homepage.",
+                    "value": "https://aws.amazon.com/",
+                    "isVisible": "false"
+                },
+                "dataSources": [
+                    {
+                        "name": "AWS",
+                        "endpointUrl": "{{endpoint.url}}api/projects/index",
+                        "resultSelector": "jsonpath:$[*].nm"
+                    }
+                ],
+                "authenticationSchemes": [
+                    {
+                        "type": "ms.vss-endpoint.endpoint-auth-scheme-basic",
+                        "inputDescriptors": [
+                            {
+                                "id": "username",
+                                "name": "Access Key ID",
+                                "description": "The AWS access key ID for signing programmatic requests.\nExample: AKIAIOSFODNN7EXAMPLE",
+                                "inputMode": "textbox",
+                                "validation": {
+                                    "isRequired": true,
+                                    "dataType": "string"
+                                }
+                            },
+                            {
+                                "id": "password",
+                                "name": "Secret Access Key",
+                                "description": "The AWS secret access key for signing programmatic requests.\nExample: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+                                "inputMode": "passwordbox",
+                                "isConfidential": true,
+                                "validation": {
+                                    "isRequired": true,
+                                    "dataType": "string"
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "helpMarkDown": "<a href=\"https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html?icmpid=docs_iam_console\" target=\"_blank\"><b>Learn More</b></a>"
+            }
+        },
+        {
+            "id": "LambdaDeploy",
+            "description": "Deploy or Publish a package in AWS Lambda Function",
+            "type": "ms.vss-distributed-task.task",
+            "targets":[
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "lambda-deploy"
+            }
+        }
+    ]
+}
